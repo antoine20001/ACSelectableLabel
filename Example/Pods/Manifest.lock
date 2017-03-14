@@ -1,0 +1,16 @@
+PODS:
+  - ACSelectableLabel (0.1.0)
+
+DEPENDENCIES:
+  - ACSelectableLabel (from `../`)
+
+EXTERNAL SOURCES:
+  ACSelectableLabel:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  ACSelectableLabel: 0fb6e04827ee147c2fe13b84fa591940635ddb49
+
+PODFILE CHECKSUM: 43d4125629041c7a49ac49bd1850414dd7e80f3b
+
+COCOAPODS: 1.2.0.rc.1

@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'ACSelectableLabel_Example' do
+  pod 'ACSelectableLabel', :path => '../'
+
+  target 'ACSelectableLabel_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

@@ -1,0 +1,22 @@
+{
+  "name": "ACSelectableLabel",
+  "version": "0.1.0",
+  "summary": "A short description of ACSelectableLabel.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/antoine.cointepas@orange.fr/ACSelectableLabel",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "antoine.cointepas@orange.fr": "antoine.cointepas@orange.fr"
+  },
+  "source": {
+    "git": "https://github.com/antoine.cointepas@orange.fr/ACSelectableLabel.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "ACSelectableLabel/Classes/**/*"
+}

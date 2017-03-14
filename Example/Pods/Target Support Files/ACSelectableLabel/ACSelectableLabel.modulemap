@@ -1,0 +1,6 @@
+framework module ACSelectableLabel {
+  umbrella header "ACSelectableLabel-umbrella.h"
+
+  export *
+  module * { export * }
+}
