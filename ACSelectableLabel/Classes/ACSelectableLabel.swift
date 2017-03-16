@@ -16,17 +16,24 @@ public protocol ACSelectableLabelDelegate: class {
 public class ACSelectableLabel: UILabel {
     
     public weak var delegate: ACSelectableLabelDelegate?
-    var gestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(recognizer:)))
-    var authorizeMenuItem : [UIMenuItem] = []
     public var enabledCopy : Bool = true
     public var enabledLink : Bool = false
     public var debugForce : Bool = false
-    public var forceLimit : CGFloat = 50.0
-
-    var target : UIViewController?
+    public var minimumPressDuration = 1.0
+    public var minimumPressForce : CGFloat = 0.7
     
+    var menuDisplayed = false
+    var gestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(recognizer:)))
+    var authorizeMenuItem : [UIMenuItem] = []
+        
+    public override func awakeFromNib() {
+        super.awakeFromNib()
+        attachTapHandler()
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
+        attachTapHandler()
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -47,17 +54,23 @@ public class ACSelectableLabel: UILabel {
     }
     
     func attachTapHandler() {
+        clearObserver()
+
         self.isUserInteractionEnabled = true
-        
         gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(recognizer:)))
+        gestureRecognizer.minimumPressDuration = 1.0
         self.addGestureRecognizer(gestureRecognizer)
         NotificationCenter.default.addObserver(self, selector: #selector(willHideMenu), name: NSNotification.Name.UIMenuControllerWillHideMenu, object: nil)
     }
     
     deinit {
+        clearObserver()
+        delegate = nil
+    }
+    
+    func clearObserver() {
         NotificationCenter.default.removeObserver(self)
         self.removeGestureRecognizer(gestureRecognizer)
-        delegate = nil
     }
     
     override public var canBecomeFirstResponder: Bool {
@@ -84,7 +97,7 @@ public class ACSelectableLabel: UILabel {
     }
     
     func handleTap(recognizer: UIGestureRecognizer) {
-        if recognizer.state == .recognized {
+        if recognizer.state == .began {
             if let recognizerView = recognizer.view, recognizerView.becomeFirstResponder()
             {
                 launchMenuController()
@@ -93,20 +106,24 @@ public class ACSelectableLabel: UILabel {
     }
     
     private func launchMenuController() {
-        self.becomeFirstResponder()
-        let menu = UIMenuController.shared
-        
-        menu.menuItems = authorizeMenuItem
-        menu.setTargetRect(frame, in: superview!)
-        menu.setMenuVisible(true, animated: true)
-        
-        let stringMutable = NSMutableAttributedString(string: text!)
-        stringMutable.addAttribute(NSBackgroundColorAttributeName, value: UIColor.lightGray.withAlphaComponent(0.5), range: .init(location: 0, length: stringMutable.length))
-        attributedText = stringMutable;
+        if !menuDisplayed {
+            menuDisplayed = true
+            self.becomeFirstResponder()
+            let menu = UIMenuController.shared
+            
+            menu.menuItems = authorizeMenuItem
+            menu.setTargetRect(frame, in: superview!)
+            menu.setMenuVisible(true, animated: true)
+            
+            let stringMutable = NSMutableAttributedString(string: text!)
+            stringMutable.addAttribute(NSBackgroundColorAttributeName, value: UIColor.lightGray.withAlphaComponent(0.5), range: .init(location: 0, length: stringMutable.length))
+            attributedText = stringMutable;
+        }
     }
     
     func willHideMenu() {
         self.text = text
+        menuDisplayed = false
     }
     
     public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -114,7 +131,7 @@ public class ACSelectableLabel: UILabel {
             if #available(iOS 9.0, *) {
                 if traitCollection.forceTouchCapability == .available {
                     let force = touch.force/touch.maximumPossibleForce
-                    if force >= forceLimit {
+                    if force >= minimumPressForce {
                         launchMenuController()
                     }
                     
@@ -127,6 +144,5 @@ public class ACSelectableLabel: UILabel {
             }
         }
     }
-    
     
 }
