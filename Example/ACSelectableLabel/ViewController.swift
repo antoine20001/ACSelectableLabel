@@ -7,11 +7,17 @@
 //
 
 import UIKit
+import ACSelectableLabel
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, ACSelectableLabelDelegate {
+    
+    @IBOutlet weak var selectableLabel: ACSelectableLabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        selectableLabel.delegate = self
+        selectableLabel.addLinkItemWith(title: "Inventory Lookup")
+
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -19,6 +25,14 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func tapOnCopy(sender: ACSelectableLabel) {
+        
+    }
 
+    
+    func tapOnLink(sender: ACSelectableLabel) {
+        
+    }
 }
 

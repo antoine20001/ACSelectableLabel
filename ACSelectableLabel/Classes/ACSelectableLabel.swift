@@ -8,8 +8,20 @@
 
 import UIKit
 
+public protocol ACSelectableLabelDelegate: class {
+    func tapOnCopy(sender: ACSelectableLabel)
+    func tapOnLink(sender: ACSelectableLabel)
+}
+
 public class ACSelectableLabel: UILabel {
     
+    public weak var delegate: ACSelectableLabelDelegate?
+    var gestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(recognizer:)))
+    var authorizeMenuItem : [UIMenuItem] = []
+    var enabledCopy : Bool = true
+    var enabledLink : Bool = false
+    var target : UIViewController?
+
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -19,10 +31,30 @@ public class ACSelectableLabel: UILabel {
         attachTapHandler()
     }
     
+    public func addLinkItemWith(title: String?) {
+        guard let title = title else {
+            enabledLink = false
+            authorizeMenuItem = []
+            return
+        }
+        
+        enabledLink = true
+        let customMenuItem = UIMenuItem(title: title, action: #selector(tapOnLinkItem(_:)))
+        authorizeMenuItem = [customMenuItem]
+    }
+    
     func attachTapHandler() {
         self.isUserInteractionEnabled = true
-        let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(recognizer:)))
+        
+        gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(recognizer:)))
         self.addGestureRecognizer(gestureRecognizer)
+        NotificationCenter.default.addObserver(self, selector: #selector(willHideMenu), name: NSNotification.Name.UIMenuControllerWillHideMenu, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+        self.removeGestureRecognizer(gestureRecognizer)
+        delegate = nil
     }
     
     override public var canBecomeFirstResponder: Bool {
@@ -30,15 +62,22 @@ public class ACSelectableLabel: UILabel {
     }
     
     override public func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-        return action == #selector(UIResponderStandardEditActions.copy(_:)) || action == #selector(inventory(_:))
+        
+        if enabledLink && action == #selector(tapOnLinkItem(_:)) {
+            return true
+        }
+        
+        return enabledCopy && action == #selector(UIResponderStandardEditActions.copy(_:))
     }
     
     override public func copy(_ sender: Any?) {
         UIPasteboard.general.string = text
+        delegate?.tapOnCopy(sender: self)
     }
     
-    func inventory(_ sender: Any?) {
+    func tapOnLinkItem(_ sender: Any?) {
         UIPasteboard.general.string = text
+        delegate?.tapOnLink(sender: self)
     }
     
     func handleTap(recognizer: UIGestureRecognizer) {
@@ -47,9 +86,8 @@ public class ACSelectableLabel: UILabel {
             {
                 self.becomeFirstResponder()
                 let menu = UIMenuController.shared
-                let inventoryMenuItem = UIMenuItem(title: "Inventory Lookup", action: #selector(inventory(_:)))
                 
-                menu.menuItems = [inventoryMenuItem]
+                menu.menuItems = authorizeMenuItem
                 menu.setTargetRect(recognizerView.frame, in: recognizerSuperView)
                 menu.setMenuVisible(true, animated: true)
                 
@@ -60,4 +98,18 @@ public class ACSelectableLabel: UILabel {
         }
     }
     
+    func willHideMenu() {
+        self.text = text
+    }
+    
+    public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first {
+            if #available(iOS 9.0, *) {
+                if traitCollection.forceTouchCapability == .available {
+                    let force = touch.force/touch.maximumPossibleForce
+                    self.text = "\(force)% force"
+                }
+            }
+        }
+    }
 }

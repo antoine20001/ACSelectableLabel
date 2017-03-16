@@ -22,7 +22,7 @@ pod "ACSelectableLabel"
 
 ## Author
 
-antoine.cointepas@orange.fr, antoine.cointepas@orange.fr
+antoine.cointepas@orange.fr
 
 ## License
 
