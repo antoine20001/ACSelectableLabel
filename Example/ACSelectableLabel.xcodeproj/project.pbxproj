@@ -42,11 +42,11 @@
 		607FACE51AFB9204008FA782 /* ACSelectableLabel_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ACSelectableLabel_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
-		69B5C95E0FD059C1EF2164A1 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		69B5C95E0FD059C1EF2164A1 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		6AD6318D2AF62BD58E648222 /* Pods-ACSelectableLabel_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACSelectableLabel_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ACSelectableLabel_Tests/Pods-ACSelectableLabel_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		837C1735262C9357954CEC7E /* Pods-ACSelectableLabel_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACSelectableLabel_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ACSelectableLabel_Tests/Pods-ACSelectableLabel_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		DA5BB6F65CF590485A1D1845 /* ACSelectableLabel.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = ACSelectableLabel.podspec; path = ../ACSelectableLabel.podspec; sourceTree = "<group>"; };
-		E5F7E62351C64010DDDB128F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		DA5BB6F65CF590485A1D1845 /* ACSelectableLabel.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = ACSelectableLabel.podspec; path = ../ACSelectableLabel.podspec; sourceTree = "<group>"; };
+		E5F7E62351C64010DDDB128F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
