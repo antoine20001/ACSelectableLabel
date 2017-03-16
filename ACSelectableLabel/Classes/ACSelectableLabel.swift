@@ -84,18 +84,22 @@ public class ACSelectableLabel: UILabel {
         if recognizer.state == .recognized {
             if let recognizerView = recognizer.view, let recognizerSuperView = recognizerView.superview, recognizerView.becomeFirstResponder()
             {
-                self.becomeFirstResponder()
-                let menu = UIMenuController.shared
-                
-                menu.menuItems = authorizeMenuItem
-                menu.setTargetRect(recognizerView.frame, in: recognizerSuperView)
-                menu.setMenuVisible(true, animated: true)
-                
-                let stringMutable = NSMutableAttributedString(string: text!)
-                stringMutable.addAttribute(NSBackgroundColorAttributeName, value: UIColor.lightGray, range: .init(location: 0, length: stringMutable.length))
-                attributedText = stringMutable;
+                launchMenuController()
             }
         }
+    }
+    
+    private func launchMenuController() {
+        self.becomeFirstResponder()
+        let menu = UIMenuController.shared
+        
+        menu.menuItems = authorizeMenuItem
+        menu.setTargetRect(frame, in: superview!)
+        menu.setMenuVisible(true, animated: true)
+        
+        let stringMutable = NSMutableAttributedString(string: text!)
+        stringMutable.addAttribute(NSBackgroundColorAttributeName, value: UIColor.lightGray.withAlphaComponent(0.5), range: .init(location: 0, length: stringMutable.length))
+        attributedText = stringMutable;
     }
     
     func willHideMenu() {
@@ -107,9 +111,14 @@ public class ACSelectableLabel: UILabel {
             if #available(iOS 9.0, *) {
                 if traitCollection.forceTouchCapability == .available {
                     let force = touch.force/touch.maximumPossibleForce
+                    if force >= 50 {
+                        launchMenuController()
+                    }
                     self.text = "\(force)% force"
                 }
             }
         }
     }
+    
+    
 }
