@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ACSelectableLabel'
-  s.version          = '1.0.1'
+  s.version          = '1.0.2'
   s.summary          = 'A subclass on UILabel that provides a copy and link to others apps\'schemes'
 
 # This description is used to generate tags and improve search results.

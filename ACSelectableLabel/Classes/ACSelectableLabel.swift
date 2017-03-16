@@ -18,10 +18,13 @@ public class ACSelectableLabel: UILabel {
     public weak var delegate: ACSelectableLabelDelegate?
     var gestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(recognizer:)))
     var authorizeMenuItem : [UIMenuItem] = []
-    var enabledCopy : Bool = true
-    var enabledLink : Bool = false
-    var target : UIViewController?
+    public var enabledCopy : Bool = true
+    public var enabledLink : Bool = false
+    public var debugForce : Bool = false
+    public var forceLimit : CGFloat = 50.0
 
+    var target : UIViewController?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -82,7 +85,7 @@ public class ACSelectableLabel: UILabel {
     
     func handleTap(recognizer: UIGestureRecognizer) {
         if recognizer.state == .recognized {
-            if let recognizerView = recognizer.view, let recognizerSuperView = recognizerView.superview, recognizerView.becomeFirstResponder()
+            if let recognizerView = recognizer.view, recognizerView.becomeFirstResponder()
             {
                 launchMenuController()
             }
@@ -111,10 +114,15 @@ public class ACSelectableLabel: UILabel {
             if #available(iOS 9.0, *) {
                 if traitCollection.forceTouchCapability == .available {
                     let force = touch.force/touch.maximumPossibleForce
-                    if force >= 50 {
+                    if force >= forceLimit {
                         launchMenuController()
                     }
-                    self.text = "\(force)% force"
+                    
+                    if debugForce {
+                        let stringMutable = NSMutableAttributedString(string: "\(force)% force")
+                        stringMutable.addAttribute(NSBackgroundColorAttributeName, value: UIColor.lightGray.withAlphaComponent(0.5), range: .init(location: 0, length: stringMutable.length))
+                        attributedText = stringMutable;
+                    }
                 }
             }
         }
