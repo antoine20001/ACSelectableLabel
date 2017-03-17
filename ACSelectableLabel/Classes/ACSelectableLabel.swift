@@ -6,6 +6,7 @@
 //  Copyright © 2017 Antoine Cointepas. All rights reserved.
 //
 
+import AudioToolbox
 import UIKit
 
 public protocol ACSelectableLabelDelegate: class {
@@ -25,12 +26,12 @@ public class ACSelectableLabel: UILabel {
     var menuDisplayed = false
     var gestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(recognizer:)))
     var authorizeMenuItem : [UIMenuItem] = []
-        
+    
     public override func awakeFromNib() {
         super.awakeFromNib()
         attachTapHandler()
     }
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         attachTapHandler()
@@ -55,7 +56,7 @@ public class ACSelectableLabel: UILabel {
     
     func attachTapHandler() {
         clearObserver()
-
+        
         self.isUserInteractionEnabled = true
         gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(recognizer:)))
         gestureRecognizer.minimumPressDuration = 1.0
@@ -107,6 +108,19 @@ public class ACSelectableLabel: UILabel {
     
     private func launchMenuController() {
         if !menuDisplayed {
+            
+            if #available(iOS 10.0, *) {
+                if let value = UIDevice.current.value(forKey: "_feedbackSupportLevel") as? Int, value == 2 {
+                    let feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+                    feedbackGenerator.prepare()
+                    feedbackGenerator.impactOccurred()
+                } else {
+                    AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
+                }
+            } else {
+                AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
+            }
+            
             menuDisplayed = true
             self.becomeFirstResponder()
             let menu = UIMenuController.shared
