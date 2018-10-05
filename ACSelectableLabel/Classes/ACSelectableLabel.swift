@@ -92,12 +92,12 @@ public class ACSelectableLabel: UILabel {
         delegate?.tapOnCopy(sender: self)
     }
     
-    @objc @objc func tapOnLinkItem(_ sender: Any?) {
+    @objc func tapOnLinkItem(_ sender: Any?) {
         UIPasteboard.general.string = text
         delegate?.tapOnLink(sender: self)
     }
     
-    @objc @objc func handleTap(recognizer: UIGestureRecognizer) {
+    @objc func handleTap(recognizer: UIGestureRecognizer) {
         if recognizer.state == .began {
             if let recognizerView = recognizer.view, recognizerView.becomeFirstResponder()
             {
