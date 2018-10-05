@@ -92,12 +92,12 @@ public class ACSelectableLabel: UILabel {
         delegate?.tapOnCopy(sender: self)
     }
     
-    func tapOnLinkItem(_ sender: Any?) {
+    @objc @objc func tapOnLinkItem(_ sender: Any?) {
         UIPasteboard.general.string = text
         delegate?.tapOnLink(sender: self)
     }
     
-    func handleTap(recognizer: UIGestureRecognizer) {
+    @objc @objc func handleTap(recognizer: UIGestureRecognizer) {
         if recognizer.state == .began {
             if let recognizerView = recognizer.view, recognizerView.becomeFirstResponder()
             {
@@ -130,12 +130,12 @@ public class ACSelectableLabel: UILabel {
             menu.setMenuVisible(true, animated: true)
             
             let stringMutable = NSMutableAttributedString(string: text!)
-            stringMutable.addAttribute(NSBackgroundColorAttributeName, value: UIColor.lightGray.withAlphaComponent(0.5), range: .init(location: 0, length: stringMutable.length))
+            stringMutable.addAttribute(NSAttributedStringKey.backgroundColor, value: UIColor.lightGray.withAlphaComponent(0.5), range: .init(location: 0, length: stringMutable.length))
             attributedText = stringMutable;
         }
     }
     
-    func willHideMenu() {
+    @objc func willHideMenu() {
         self.text = text
         menuDisplayed = false
     }
@@ -151,7 +151,7 @@ public class ACSelectableLabel: UILabel {
                     
                     if debugForce {
                         let stringMutable = NSMutableAttributedString(string: "\(force)% force")
-                        stringMutable.addAttribute(NSBackgroundColorAttributeName, value: UIColor.lightGray.withAlphaComponent(0.5), range: .init(location: 0, length: stringMutable.length))
+                        stringMutable.addAttribute(NSAttributedStringKey.backgroundColor, value: UIColor.lightGray.withAlphaComponent(0.5), range: .init(location: 0, length: stringMutable.length))
                         attributedText = stringMutable;
                     }
                 }
